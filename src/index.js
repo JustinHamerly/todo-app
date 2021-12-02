@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 
 import App from './app.js';
 
-class Main extends React.Component {
-  render() {
-    return <App />;
-  }
-}
+import Settings from './context/settings';
 
-const rootElement = document.getElementById('root');
-ReactDOM.render(<Main />, rootElement);
+ReactDOM.render(
+  <React.StrictMode>
+    <Settings>
+      <App />;
+    </Settings>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
