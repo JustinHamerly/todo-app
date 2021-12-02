@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import useForm from '../../hooks/form.js';
 
 import { v4 as uuid } from 'uuid';
 
+import { SettingsContext } from '../../context/settings.js';
+
 const ToDo = () => {
+
+  let settings = useContext(SettingsContext)
 
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
