@@ -55,7 +55,7 @@ function List(props) {
             PREV
           </Button>
         )}
-        {props.list.length > settings.itemsPerPage ? (
+        {props.list.length > settings.numberOfItems ? (
           <Button id="next" onClick={changePage} type="button" className="rounded-md bg-green-300 w-12">
             NEXT
           </Button>
