@@ -1,15 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import useForm from '../../hooks/form.js';
-import Header from '../header/Header';
-import List from '../list/List';
 import Form from '../form/Form';
-import { SettingsContext } from '../../context/settings.js';
 import { v4 as uuid } from 'uuid';
 
 
 const ToDo = () => {
-
-  let settings = useContext(SettingsContext)
 
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
@@ -34,11 +29,7 @@ const ToDo = () => {
   }, [list]);
 
   return (
-    <>
-      <Header incomplete={incomplete} />
-      <Form onSubmit={handleSubmit} onChange={handleChange} />
-      <List list={list} setList={setList} />
-    </>
+    <Form onSubmit={handleSubmit} onChange={handleChange} />
   )
 };
 

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { SettingsContext } from '../../context/settings.js';
+import { SettingsContext } from '../../context/settings';
 import { Button, Card, Elevation } from '@blueprintjs/core';
 
 function List(props) {
@@ -7,16 +7,13 @@ function List(props) {
   let [page, setPage] = useState(1);
 
   function toggleComplete(id) {
-
     const items = props.list.map( item => {
       if ( item.id == id ) {
         item.complete = ! item.complete;
       }
       return item;
     });
-
     props.setList(items);
-
   }
 
   function changePage(e) {
@@ -29,17 +26,28 @@ function List(props) {
     }
     return;
   }
+  
+  function getToDo(){
+    const lastIndex = page * settings.numberOfItems;
+    const firstIndex = lastIndex - settings.numberOfItems;
+    const pageListItems = props.list.slice(firstIndex, lastIndex);
+    if(!settings.displayCompleted){
+      return pageListItems.filter(item => {
+        if(item.coomplete){
+          return false;
+        }
+        return true;
+      })
+    }
+    return pageListItems;
+  }
 
-  const lastIndex = page * settings.numberOfItems;
 
-  const firstIndex = lastIndex - settings.numberOfItems;
-
-  const pageListItems = props.list.slice(firstIndex, lastIndex);
 
   return (
     <>
       <div>
-        {pageListItems.map(item => (
+        {getToDo().map(item => (
           <Card id='todoCard' interactive={true} elevation={Elevation.TWO} key={item.id}>
             <h5>{item.text}</h5>
             <p><small>Assigned to: {item.assignee}</small></p>
