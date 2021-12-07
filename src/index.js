@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import App from './app.js';
-
 import Settings from './context/settings';
+import Auth from './context/auth'
+import App from './app.js';
 
 ReactDOM.render(
   <React.StrictMode>
     <Settings>
-      <App />;
+      <Auth>
+        <App />;
+      </Auth>
     </Settings>
   </React.StrictMode>,
   document.getElementById('root')
