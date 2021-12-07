@@ -1,78 +1,48 @@
 import { useContext, useState } from 'react';
-import { SettingsContext } from '../../context/settings';
-import { Button, Card, Elevation } from '@blueprintjs/core';
+import { SettingsContext } from '../../context/settings.js';
+import ListItem from '../listItem/listItem.js';
 
 function List(props) {
-  let settings = useContext(SettingsContext);
-  let [page, setPage] = useState(1);
 
-  function toggleComplete(id) {
-    const items = props.list.map( item => {
-      if ( item.id == id ) {
-        item.complete = ! item.complete;
-      }
-      return item;
-    });
-    props.setList(items);
-  }
+  const settings = useContext(SettingsContext);
+  const [currentPage, setPage] = useState(1);
 
   function changePage(e) {
-    if (e.target.id === 'next'){
-      setPage(page + 1);
+    if (e.target.id === 'next') {
+      setPage(currentPage + 1);
       return;
-    } else if (e.target.id === 'prev'){
-      setPage(page - 1);
-      return
+    } else if (e.target.id === 'prev') {
+      setPage(currentPage - 1);
+      return;
     }
     return;
   }
-  
-  function getToDo(){
-    const lastIndex = page * settings.numberOfItems;
-    const firstIndex = lastIndex - settings.numberOfItems;
-    const pageListItems = props.list.slice(firstIndex, lastIndex);
-    if(!settings.displayCompleted){
-      return pageListItems.filter(item => {
-        if(item.coomplete){
-          return false;
-        }
-        return true;
-      })
-    }
-    return pageListItems;
-  }
 
-
+  const lastIndex = currentPage * settings.numberOfItems;
+  const firstIndex = lastIndex - settings.numberOfItems;
+  const listItems = props.list.slice(firstIndex, lastIndex);
 
   return (
     <>
-      <div>
-        {getToDo().map(item => (
-          <Card id='todoCard' interactive={true} elevation={Elevation.TWO} key={item.id}>
-            <h5>{item.text}</h5>
-            <p><small>Assigned to: {item.assignee}</small></p>
-            <p><small>Difficulty: {item.difficulty}</small></p>
-            <Button onClick={() => toggleComplete(item.id)}>Complete: {item.complete.toString()}
-            </Button>
-          </Card>
+      <div id='cardContainer'>
+        {listItems.map(item => (
+          <ListItem key = {item.id} item={item} toggleComplete={props.toggleComplete} deleteItem={props.deleteItem} />
         ))}
       </div>
-      <div>
-        {page > 1 && (
-          <Button id="prev" onClick={changePage} type="button" className="rounded-md bg-green-300 w-12">
-            PREV
-          </Button>
-        )}
+      <div id="nextPrevButtons">
+        {currentPage > 1 ? (
+          <button id="prev" onClick={changePage} type="button">
+            Back
+          </button>
+        ) : null}
         {props.list.length > settings.numberOfItems ? (
-          <Button id="next" onClick={changePage} type="button" className="rounded-md bg-green-300 w-12">
-            NEXT
-          </Button>
+          <button id="next" onClick={changePage} type="button">
+            Next
+          </button>
         ) : null}
       </div>
     </>
-    
-  )
-
+  );
 }
 
 export default List;
